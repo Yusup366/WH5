@@ -6,6 +6,7 @@ from rest_framework import status
 from .models import Director, Movie , Review
 from .serializers import DirectorSerializer,MovieSerializer,ReviewSerializer
 
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def director_detail_api_view(request,id):
     try:
@@ -39,12 +40,12 @@ def director_list_create_api_view(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
+@api_view(['GET','PUT','DELETE'])
 def movie_detail_api_view(request,id):
     try:
         movie = Movie.objects.get(id=id)
     except Movie.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'error':'Movie not found'},status=status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
@@ -71,13 +72,12 @@ def movie_list_create_api_view(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['GET','PUT','DELETE'])
 def review_detail_api_view(request,id):
     try:
         review = Review.objects.get(id=id)
     except Review.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'error':'Review not found'},status=status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':
         serializer = ReviewSerializer(review)
         return Response(serializer.data)

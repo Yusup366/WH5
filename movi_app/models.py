@@ -16,7 +16,7 @@ class Movie(models.Model):
         return self.title
 
 STARS = (
-    (i, '* ' * i)for i in range(1,6)
+    (i, '*' * i) for i in range(1, 6)
 )
 
 class Review(models.Model):
@@ -25,4 +25,4 @@ class Review(models.Model):
     stars = models.IntegerField(default=5,choices=STARS,null=True,blank=True)
 
     def __str__(self):
-        return f'{self.text}-{self.movie}-{self.stars} stars'
+        return f'{self.text[:30]}-{self.movie.title}-{self.stars} stars'
